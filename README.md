@@ -60,19 +60,21 @@ Typing the session property
 ```ts
 // ~/server/middleware/session.ts
 import type { IncomingMessage, ServerResponse } from 'h3'
+import type { Session } from 'h3-session'
 import { SessionHandler } from 'h3-session'
 
 export default SessionHandler({})
 
-interface Session {
-  session: { name: string }
-  sessionId: string
+interface SessionData {
+  someKey: string
 }
 
 declare module 'h3' {
   interface CompatibilityEvent {
     event: CompatibilityEvent
-    req: IncomingMessage & Session
+    req: IncomingMessage & {
+      session: Session & SessionData
+    }
     res: ServerResponse
     context: Record<string, any>
   }
