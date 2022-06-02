@@ -1,4 +1,4 @@
-import type { SessionOptions, Session } from 'express-session'
+import type { Session, SessionOptions } from 'express-session'
 import session from 'express-session'
 import type { EventHandler } from 'h3'
 
@@ -8,5 +8,5 @@ export function SessionHandler(options: SessionOptions): EventHandler<void> {
 
 export type {
   SessionOptions,
-  Session
+  Session,
 }
