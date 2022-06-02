@@ -1,7 +1,7 @@
 import type { Session, SessionData, SessionOptions } from 'express-session'
 import session from 'express-session'
 import type { CompatibilityEventHandler, IncomingMessage } from 'h3'
-import { defineHandler } from 'h3'
+import { defineEventHandler, defineHandler } from 'h3'
 
 export function SessionHandler(options: SessionOptions): CompatibilityEventHandler[] {
   return [
@@ -12,6 +12,12 @@ export function SessionHandler(options: SessionOptions): CompatibilityEventHandl
       }
     }),
     session(options) as any,
+    defineEventHandler((event) => {
+      // @ts-expect-error: Internal
+      event.context.session = event.req.session
+      // @ts-expect-error: Internal
+      event.context.sessionId = event.req.sessionId
+    }),
   ]
 }
 
@@ -22,10 +28,8 @@ export type {
 }
 
 declare module 'h3' {
-  interface CompatibilityEventHandler {
-    req: IncomingMessage & {
-      session: Session & Partial<SessionData>
-      sessionId: string
-    }
+  interface EventContext {
+    session: Session & Partial<SessionData>
+    sessionId: string
   }
 }
