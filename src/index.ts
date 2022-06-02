@@ -1,19 +1,28 @@
-import type { Session, SessionOptions, SessionData } from 'express-session'
+import type { Session, SessionData, SessionOptions } from 'express-session'
 import session from 'express-session'
-import type { EventHandler, IncomingMessage } from 'h3'
+import type { CompatibilityEventHandler, IncomingMessage } from 'h3'
+import { defineHandler } from 'h3'
 
-export function SessionHandler(options: SessionOptions): EventHandler<void> {
-  return session(options) as any
+export function SessionHandler(options: SessionOptions): CompatibilityEventHandler[] {
+  return [
+    defineHandler((req, res) => {
+      // @ts-expect-error: Internal
+      res._implicitHeader = () => {
+        res.writeHead(res.statusCode)
+      }
+    }),
+    session(options) as any,
+  ]
 }
 
 export type {
   SessionOptions,
   Session,
-  SessionData
+  SessionData,
 }
 
 declare module 'h3' {
-  interface CompatibilityEvent {
+  interface CompatibilityEventHandler {
     req: IncomingMessage & {
       session: Session & Partial<SessionData>
       sessionId: string
