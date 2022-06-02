@@ -13,9 +13,12 @@ export function SessionHandler(options: SessionOptions): CompatibilityEventHandl
     }),
     session(options) as any,
     defineHandler((req) => {
+      // @ts-expect-error: Save old value
+      req.session._regenerate = req.session.regenerate
       // @ts-expect-error: Internal
       req.session.regenerate = () => new Promise((resolve, reject) => {
-        (req as any).session.regenerate((err: Error) => {
+        // @ts-expect-error: Call saved value
+        req.session._regenerate((err: Error) => {
           if (err)
             return reject(err)
 
@@ -23,9 +26,12 @@ export function SessionHandler(options: SessionOptions): CompatibilityEventHandl
         })
       })
 
+      // @ts-expect-error: Save old value
+      req.session._destroy = req.session.destroy
       // @ts-expect-error: Internal
       req.session.destroy = () => new Promise((resolve, reject) => {
-        (req as any).session.destroy((err: Error) => {
+        // @ts-expect-error: Call saved value
+        req.session._destroy((err: Error) => {
           if (err)
             return reject(err)
 
@@ -33,9 +39,12 @@ export function SessionHandler(options: SessionOptions): CompatibilityEventHandl
         })
       })
 
+      // @ts-expect-error: Save old value
+      req.session._reload = req.session.reload
       // @ts-expect-error: Internal
       req.session.reload = () => new Promise((resolve, reject) => {
-        (req as any).session.reload((err: Error) => {
+        // @ts-expect-error: Call saved value
+        req.session._reload((err: Error) => {
           if (err)
             return reject(err)
 
@@ -43,9 +52,12 @@ export function SessionHandler(options: SessionOptions): CompatibilityEventHandl
         })
       })
 
+      // @ts-expect-error: Save old value
+      req.session._save = req.session.save
       // @ts-expect-error: Internal
       req.session.save = () => new Promise((resolve, reject) => {
-        (req as any).session.save((err: Error) => {
+        // @ts-expect-error: Call saved value
+        req.session._save((err: Error) => {
           if (err)
             return reject(err)
 
