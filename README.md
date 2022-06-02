@@ -74,6 +74,7 @@ declare module 'h3' {
     event: CompatibilityEvent
     req: IncomingMessage & {
       session: Session & SessionData
+      sessionId: string
     }
     res: ServerResponse
     context: Record<string, any>
