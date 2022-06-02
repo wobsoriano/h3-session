@@ -58,13 +58,23 @@ Visit the [express-session docs](https://github.com/expressjs/session#sessionopt
 Typing the session property
 
 ```ts
+// ~/server/middleware/session.ts
+import type { IncomingMessage, ServerResponse } from 'h3'
+import { SessionHandler } from 'h3-session'
+
+export default SessionHandler({})
+
+interface Session {
+  session: { name: string }
+  sessionId: string
+}
+
 declare module 'h3' {
   interface CompatibilityEvent {
-    req: IncomingMessage & {
-      session: {
-        views: number
-      }
-    }
+    event: CompatibilityEvent
+    req: IncomingMessage & Session
+    res: ServerResponse
+    context: Record<string, any>
   }
 }
 ```
