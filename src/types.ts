@@ -16,13 +16,13 @@ export interface Session {
   cookie: Cookie
 
   /** To regenerate the session simply invoke the method. Once complete, a new SID and `Session` instance will be initialized at `req.session` and the `callback` will be invoked. */
-  regenerate(callback: (err: any) => void): void
+  regenerate: () => Promise<void>
 
   /** Destroys the session and will unset the `req.session` property. Once complete, the `callback` will be invoked. */
-  destroy(callback: (err: any) => void): void
+  destroy: () => Promise<void>
 
   /** Reloads the session data from the store and re-populates the `req.session` object. Once complete, the `callback` will be invoked. */
-  reload(callback: (err: any) => void): void
+  reload: () => Promise<void>
 
   /**
    * Resets the cookie's `maxAge` to `originalMaxAge`
@@ -39,7 +39,7 @@ export interface Session {
    * Because of this, typically this method does not need to be called.
    * There are some cases where it is useful to call this method, for example: redirects, long-lived requests or in WebSockets.
    */
-  save(callback?: (err: any) => void): void
+  save: () => Promise<void>
 
   /** Updates the `maxAge` property. Typically this is not necessary to call, as the session middleware does this for you. */
   touch(): void
