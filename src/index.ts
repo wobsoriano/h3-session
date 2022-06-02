@@ -29,7 +29,22 @@ declare module 'h3' {
     '__is_event__': true
     event: CompatibilityEvent
     req: IncomingMessage & {
-      session: Session & H3SessionData
+      session: Session & Partial<H3SessionData>
+      sessionId: string
+    }
+    res: ServerResponse & {
+      _implicitHeader: () => void
+    }
+    context: H3EventContext
+  }
+}
+
+declare global {
+  interface CompatibilityEvent {
+    '__is_event__': true
+    event: CompatibilityEvent
+    req: IncomingMessage & {
+      session: Session & Partial<H3SessionData>
       sessionId: string
     }
     res: ServerResponse & {
