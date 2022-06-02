@@ -1,6 +1,6 @@
 import type { Session, SessionData, SessionOptions } from 'express-session'
 import session from 'express-session'
-import type { CompatibilityEventHandler, IncomingMessage } from 'h3'
+import type { CompatibilityEventHandler } from 'h3'
 import { defineEventHandler, defineHandler } from 'h3'
 
 export function SessionHandler(options: SessionOptions): CompatibilityEventHandler[] {
