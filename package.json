@@ -5,13 +5,8 @@
     "access": "public"
   },
   "description": "Session middleware for h3",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "exports": {
-    "require": "./dist/index.js",
-    "import": "./dist/index.mjs"
-  },
-  "types": "./dist/index.d.ts",
+  "author": "Robert Soriano <sorianorobertc@gmail.com>",
+  "license": "MIT",
   "keywords": [
     "nuxt",
     "vue",
@@ -22,6 +17,13 @@
     "middleware",
     "universal"
   ],
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/index.mjs"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build-fast": "tsup src/index.ts --format cjs,esm",
     "build": "pnpm run build-fast --dts-resolve",
@@ -30,8 +32,6 @@
     "lint:fix": "eslint . --fix",
     "release": "bumpp --commit --push --tag && npm publish"
   },
-  "author": "Robert Soriano <sorianorobertc@gmail.com>",
-  "license": "MIT",
   "dependencies": {
     "express-session": "^1.17.3",
     "h3": "^0.7.8"
