@@ -15,6 +15,8 @@ export function SessionHandler(options: SessionOptions): CompatibilityEventHandl
   ]
 }
 
+export * from './types'
+
 export type {
   SessionOptions,
 }
