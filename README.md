@@ -51,20 +51,20 @@ export default defineEventHandler((event) => {
 })
 ```
 
-## Promisified methods
+## Promisified session methods
 
 ```ts
 export default defineEventHandler((event) => {
-  await event.context.session.regenerate()
+  await event.context.session.regeneratePromisified()
   // will have a new session here
 
-  await event.context.session.reload()
+  await event.context.session.reloadPromisified()
   // session updated
 
-  await event.context.session._save()
+  await event.context.session.savePromisified()
   // session saved
 
-  await event.context.session.destroy()
+  await event.context.session.destroyPromisified()
   // cannot access session here
 })
 ```

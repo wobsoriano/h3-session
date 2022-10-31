@@ -15,14 +15,14 @@ export interface Session {
    */
   cookie: Cookie
 
-  /** To regenerate the session simply invoke the method. Once complete, a new SID and `Session` instance will be initialized at `event.context.session` and the `callback` will be invoked. */
-  regenerate(): Promise<true>
+  /** To regenerate the session simply invoke the method. Once complete, a new SID and `Session` instance will be initialized at `event.context.session`. */
+  regeneratePromisified(): Promise<true>
 
-  /** Destroys the session and will unset the `event.context.session` property. Once complete, the `callback` will be invoked. */
-  destroy(): Promise<true>
+  /** Destroys the session and will unset the `event.context.session` property. */
+  destroyPromisified(): Promise<true>
 
-  /** Reloads the session data from the store and re-populates the `event.context.session` object. Once complete, the `callback` will be invoked. */
-  reload(): Promise<true>
+  /** Reloads the session data from the store and re-populates the `event.context.session` object. */
+  reloadPromisified(): Promise<true>
 
   /**
    * Resets the cookie's `maxAge` to `originalMaxAge`
@@ -39,7 +39,7 @@ export interface Session {
    * Because of this, typically this method does not need to be called.
    * There are some cases where it is useful to call this method, for example: redirects, long-lived requests or in WebSockets.
    */
-  _save(): Promise<true>
+  savePromisified(): Promise<true>
 
   /** Updates the `maxAge` property. Typically this is not necessary to call, as the session middleware does this for you. */
   touch(): void
