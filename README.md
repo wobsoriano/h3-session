@@ -71,24 +71,6 @@ export default defineEventHandler((event) => {
 
 Visit the [express-session docs](https://github.com/expressjs/session#sessionoptions) to see the complete session configuration.
 
-## TypeScript
-
-Typing the session property
-
-```ts
-// ~/server/middleware/session.ts
-import type { Session } from 'h3-session'
-import { createSessionHandler } from 'h3-session'
-
-export default createSessionHandler({})
-
-declare module 'h3' {
-  interface H3EventContext {
-    session: Session
-  }
-}
-```
-
 ## License
 
 MIT
