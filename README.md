@@ -29,14 +29,15 @@ app.use(createSessionHandler({
 ## Usage with Nuxt 3
 
 ```ts
-// ~/server/middleware/session.ts
-import { createSessionHandler } from 'h3-session'
-
-export default createSessionHandler({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['h3-session/nuxt'],
+  session: {
+    secret: 'keyboard cats',
+    resave: true,
+    saveUninitialized: true,
+    cookie: { secure: true },
+  }
 })
 ```
 

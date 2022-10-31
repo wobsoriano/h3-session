@@ -23,7 +23,6 @@ export default defineNuxtModule({
       getContents: () => `
         import { createSessionHandler } from 'h3-session'
         import { useRuntimeConfig } from '#imports'
-        console.log(useRuntimeConfig().session)
         export default createSessionHandler(useRuntimeConfig().session)
       `,
     })
