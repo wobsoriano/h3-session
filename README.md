@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/npm/v/h3-session?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/h3-session)
 
-Add session support in h3 using [express-session](https://github.com/expressjs/session).
+Add session support in h3 and Nuxt apps using [express-session](https://github.com/expressjs/session).
 
 ## Installation
 

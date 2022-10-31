@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "Session middleware for h3",
+  "description": "Session middleware for h3 and Nuxt apps.",
   "author": "Robert Soriano <sorianorobertc@gmail.com>",
   "license": "MIT",
   "keywords": [
