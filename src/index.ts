@@ -9,7 +9,7 @@ declare module 'h3' {
   }
 }
 
-function SessionHandler(options: SessionOptions): EventHandler[] {
+export function createSessionHandler(options: SessionOptions): EventHandler[] {
   return [
     eventHandler((event) => {
       (event.res as any)._implicitHeader = () => {
@@ -20,7 +20,7 @@ function SessionHandler(options: SessionOptions): EventHandler[] {
     eventHandler((event) => {
       event.context.session = (event.req as any).session
 
-      event.context.session.regenerate = () => new Promise<true>((resolve, reject) => {
+      event.context.session.regenerate = () => new Promise((resolve, reject) => {
         // @ts-expect-error: Session missing types
         event.req.session.regenerate((err: Error) => {
           if (err)
@@ -63,9 +63,4 @@ function SessionHandler(options: SessionOptions): EventHandler[] {
   ]
 }
 
-export default SessionHandler({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true },
-})
+export type { Session }
