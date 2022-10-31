@@ -28,7 +28,7 @@ export default defineNuxtModule({
     })
 
     addServerHandler({
-      handler: resolve(nuxt.options.buildDir, 'session-handler.mjs'),
+      handler: resolve(nuxt.options.buildDir, 'h3-session/handler.mjs'),
       middleware: true,
     })
 
