@@ -51,6 +51,24 @@ export default defineEventHandler((event) => {
 })
 ```
 
+## Promisified methods
+
+```ts
+export default defineEventHandler((event) => {
+  await event.context.session.regenerate()
+  // will have a new session here
+
+  await event.context.session.reload()
+  // session updated
+
+  await event.context.session._save()
+  // session saved
+
+  await event.context.session.destroy()
+  // cannot access session here
+})
+```
+
 Visit the [express-session docs](https://github.com/expressjs/session#sessionoptions) to see the complete session configuration.
 
 ## TypeScript
