@@ -3,7 +3,7 @@
 export interface Session {
   /**
    * Each session has a unique ID associated with it.
-   * This property is an alias of `req.sessionID` and cannot be modified.
+   * This property is an alias of `event.context.sessionID` and cannot be modified.
    * It has been added to make the session ID accessible from the session object.
    */
   id: string
@@ -11,17 +11,17 @@ export interface Session {
   /**
    * Each session has a unique cookie object accompany it.
    * This allows you to alter the session cookie per visitor.
-   * For example we can set `req.session.cookie.expires` to `false` to enable the cookie to remain for only the duration of the user-agent.
+   * For example we can set `event.context.session.cookie.expires` to `false` to enable the cookie to remain for only the duration of the user-agent.
    */
   cookie: Cookie
 
-  /** To regenerate the session simply invoke the method. Once complete, a new SID and `Session` instance will be initialized at `req.session` and the `callback` will be invoked. */
+  /** To regenerate the session simply invoke the method. Once complete, a new SID and `Session` instance will be initialized at `event.context.session` and the `callback` will be invoked. */
   regenerate(): Promise<true>
 
-  /** Destroys the session and will unset the `req.session` property. Once complete, the `callback` will be invoked. */
+  /** Destroys the session and will unset the `event.context.session` property. Once complete, the `callback` will be invoked. */
   destroy(): Promise<true>
 
-  /** Reloads the session data from the store and re-populates the `req.session` object. Once complete, the `callback` will be invoked. */
+  /** Reloads the session data from the store and re-populates the `event.context.session` object. Once complete, the `callback` will be invoked. */
   reload(): Promise<true>
 
   /**
@@ -39,7 +39,7 @@ export interface Session {
    * Because of this, typically this method does not need to be called.
    * There are some cases where it is useful to call this method, for example: redirects, long-lived requests or in WebSockets.
    */
-  save(): Promise<true>
+  _save(): Promise<true>
 
   /** Updates the `maxAge` property. Typically this is not necessary to call, as the session middleware does this for you. */
   touch(): void

@@ -1,24 +1,28 @@
 import type { SessionOptions } from 'express-session'
 import session from 'express-session'
-import { defineHandler } from 'h3'
-import type { CompatibilityEventHandler } from 'h3'
+import { eventHandler, fromNodeMiddleware } from 'h3'
+import type { EventHandler, NodeMiddleware } from 'h3'
+import type { Session } from './types'
+declare module 'h3' {
+  interface H3EventContext {
+    session: Session
+  }
+}
 
-export function SessionHandler(options: SessionOptions): CompatibilityEventHandler[] {
+function SessionHandler(options: SessionOptions): EventHandler[] {
   return [
-    defineHandler((_req, res) => {
-      // @ts-expect-error: Internal
-      res._implicitHeader = () => {
-        res.writeHead(res.statusCode)
+    eventHandler((event) => {
+      (event.res as any)._implicitHeader = () => {
+        event.res.writeHead(event.res.statusCode)
       }
     }),
-    session(options) as any,
-    defineHandler((req) => {
-      // @ts-expect-error: Save old value
-      req.session._regenerate = req.session.regenerate
-      // @ts-expect-error: Internal
-      req.session.regenerate = () => new Promise((resolve, reject) => {
-        // @ts-expect-error: Call saved value
-        req.session._regenerate((err: Error) => {
+    fromNodeMiddleware(session(options) as NodeMiddleware),
+    eventHandler((event) => {
+      event.context.session = (event.req as any).session
+
+      event.context.session.regenerate = () => new Promise<true>((resolve, reject) => {
+        // @ts-expect-error: Session missing types
+        event.req.session.regenerate((err: Error) => {
           if (err)
             return reject(err)
 
@@ -26,12 +30,9 @@ export function SessionHandler(options: SessionOptions): CompatibilityEventHandl
         })
       })
 
-      // @ts-expect-error: Save old value
-      req.session._destroy = req.session.destroy
-      // @ts-expect-error: Internal
-      req.session.destroy = () => new Promise((resolve, reject) => {
-        // @ts-expect-error: Call saved value
-        req.session._destroy((err: Error) => {
+      event.context.session.destroy = () => new Promise((resolve, reject) => {
+        // @ts-expect-error: Session missing types
+        event.req.session.destroy((err: Error) => {
           if (err)
             return reject(err)
 
@@ -39,12 +40,9 @@ export function SessionHandler(options: SessionOptions): CompatibilityEventHandl
         })
       })
 
-      // @ts-expect-error: Save old value
-      req.session._reload = req.session.reload
-      // @ts-expect-error: Internal
-      req.session.reload = () => new Promise((resolve, reject) => {
-        // @ts-expect-error: Call saved value
-        req.session._reload((err: Error) => {
+      event.context.session.reload = () => new Promise((resolve, reject) => {
+        // @ts-expect-error: Session missing types
+        event.req.session.reload((err: Error) => {
           if (err)
             return reject(err)
 
@@ -52,12 +50,9 @@ export function SessionHandler(options: SessionOptions): CompatibilityEventHandl
         })
       })
 
-      // @ts-expect-error: Save old value
-      req.session._save = req.session.save
-      // @ts-expect-error: Internal
-      req.session.save = () => new Promise((resolve, reject) => {
-        // @ts-expect-error: Call saved value
-        req.session._save((err: Error) => {
+      event.context.session._save = () => new Promise((resolve, reject) => {
+        // @ts-expect-error: Session missing types
+        event.req.session.save((err: Error) => {
           if (err)
             return reject(err)
 
@@ -68,8 +63,9 @@ export function SessionHandler(options: SessionOptions): CompatibilityEventHandl
   ]
 }
 
-export * from './types'
-
-export type {
-  SessionOptions,
-}
+export default SessionHandler({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true },
+})
