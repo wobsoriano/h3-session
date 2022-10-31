@@ -14,11 +14,11 @@ npm install h3-session
 
 ```ts
 import { createApp } from 'h3'
-import { SessionHandler } from 'h3-session'
+import { createSessionHandler } from 'h3-session'
 
 const app = createApp()
 
-app.use(SessionHandler({
+app.use(createSessionHandler({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
@@ -30,9 +30,9 @@ app.use(SessionHandler({
 
 ```ts
 // ~/server/middleware/session.ts
-import { SessionHandler } from 'h3-session'
+import { createSessionHandler } from 'h3-session'
 
-export default SessionHandler({
+export default createSessionHandler({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
@@ -42,12 +42,12 @@ export default SessionHandler({
 
 ```ts
 // ~/server/api/hello.ts
-export default defineEventHandler(({ req }) => {
+export default defineEventHandler((event) => {
   // Get the session ID:
-  console.log(req.session.id)
+  console.log(event.context.session.id)
 
   // Assign some value to session:
-  req.session.someKey = 'some value'
+  event.context.session.someKey = 'some value'
 })
 ```
 
@@ -59,25 +59,14 @@ Typing the session property
 
 ```ts
 // ~/server/middleware/session.ts
-import type { IncomingMessage, ServerResponse } from 'h3'
 import type { Session } from 'h3-session'
-import { SessionHandler } from 'h3-session'
+import { createSessionHandler } from 'h3-session'
 
-export default SessionHandler({})
-
-interface SessionData {
-  someKey: string
-}
+export default createSessionHandler({})
 
 declare module 'h3' {
-  interface CompatibilityEvent {
-    event: CompatibilityEvent
-    req: IncomingMessage & {
-      session: Session & SessionData
-      sessionId: string
-    }
-    res: ServerResponse
-    context: Record<string, any>
+  interface H3EventContext {
+    session: Session
   }
 }
 ```
