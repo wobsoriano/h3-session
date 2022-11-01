@@ -32,6 +32,24 @@ export default defineNuxtModule({
       middleware: true,
     })
 
+    addTemplate({
+      filename: 'types/h3-session.d.ts',
+      getContents: () => `
+        declare module 'h3' {
+          import type { Session } from 'h3-session'
+          interface H3EventContext {
+            session: Session
+          }
+        }
+
+        export {}
+      `,
+    })
+
+    nuxt.hook('prepare:types', (options) => {
+      options.references.push({ path: resolve(nuxt.options.buildDir, 'types/h3-session.d.ts') })
+    })
+
     logger.success('h3-session middleware installed')
   },
 })
