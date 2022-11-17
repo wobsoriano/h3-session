@@ -49,12 +49,12 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.0",
-    "@nuxt/kit": "3.0.0-rc.12",
-    "@types/express-session": "^1.17.4",
-    "bumpp": "^7.1.1",
+    "@nuxt/kit": "3.0.0",
+    "@types/express-session": "^1.17.5",
+    "bumpp": "^8.2.1",
     "eslint": "^8.16.0",
     "h3": "^1.0.1",
-    "tsup": "^6.0.1",
+    "tsup": "^6.5.0",
     "typescript": "^4.7.2"
   },
   "eslintConfig": {
