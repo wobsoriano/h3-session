@@ -18,7 +18,7 @@ export default defineNuxtModule({
     }
 
     addTemplate({
-      filename: 'session-handler.mjs',
+      filename: 'h3-session/handler.mjs',
       write: true,
       getContents: () => `
         import { createSessionHandler } from 'h3-session'
