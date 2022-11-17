@@ -12,17 +12,17 @@ declare module 'h3' {
 export function createSessionHandler(options: SessionOptions): EventHandler[] {
   return [
     eventHandler((event) => {
-      (event.res as any)._implicitHeader = () => {
-        event.res.writeHead(event.res.statusCode)
+      (event.node.res as any)._implicitHeader = () => {
+        event.node.res.writeHead(event.node.res.statusCode)
       }
     }),
     fromNodeMiddleware(session(options) as NodeMiddleware),
     eventHandler((event) => {
-      event.context.session = (event.req as any).session
+      event.context.session = (event.node.req as any).session
 
       event.context.session.regeneratePromisified = () => new Promise((resolve, reject) => {
         // @ts-expect-error: Session missing types
-        event.req.session.regenerate((err: Error) => {
+        event.node.req.session.regenerate((err: Error) => {
           if (err)
             return reject(err)
 
@@ -32,7 +32,7 @@ export function createSessionHandler(options: SessionOptions): EventHandler[] {
 
       event.context.session.destroyPromisified = () => new Promise((resolve, reject) => {
         // @ts-expect-error: Session missing types
-        event.req.session.destroy((err: Error) => {
+        event.node.req.session.destroy((err: Error) => {
           if (err)
             return reject(err)
 
@@ -42,7 +42,7 @@ export function createSessionHandler(options: SessionOptions): EventHandler[] {
 
       event.context.session.reloadPromisified = () => new Promise((resolve, reject) => {
         // @ts-expect-error: Session missing types
-        event.req.session.reload((err: Error) => {
+        event.node.req.session.reload((err: Error) => {
           if (err)
             return reject(err)
 
@@ -52,7 +52,7 @@ export function createSessionHandler(options: SessionOptions): EventHandler[] {
 
       event.context.session.savePromisified = () => new Promise((resolve, reject) => {
         // @ts-expect-error: Session missing types
-        event.req.session.save((err: Error) => {
+        event.node.req.session.save((err: Error) => {
           if (err)
             return reject(err)
 
